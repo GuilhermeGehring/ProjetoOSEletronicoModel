@@ -21,7 +21,7 @@
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/db_pw_oseletronicos"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="123456"/>
+      <property name="javax.persistence.jdbc.password" value="postgres"/>
       <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

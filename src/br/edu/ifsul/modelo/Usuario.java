@@ -1,4 +1,3 @@
-
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
