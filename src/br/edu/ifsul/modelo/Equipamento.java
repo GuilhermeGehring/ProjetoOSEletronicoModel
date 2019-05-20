@@ -37,7 +37,7 @@ public class Equipamento implements Serializable {
     
     @NotBlank(message = "O numero de série não pode ser em branco")
     @Length(max = 30, message = "O numero de série não pode ter mais que {max} caracteres")
-    @Column(name = "numero_serie", length = 30)   
+    @Column(name = "numero_serie", length = 30)
     private String numeroSerie;
     
     @NotNull(message = "A marca deve ser informada")

@@ -77,7 +77,7 @@ public class Usuario implements Serializable {
     @Column(name = "telefone_principal", length = 14, nullable = false) 
     private String telefonePrincipal;
     
-    @Length(max = 14, message = "O telefone alternatico não pode ter mais de {max} caracteres")
+    @Length(max = 14, message = "O telefone alternativo não pode ter mais de {max} caracteres")
     @Column(name = "telefone_alternativo", length = 14)  
     private String telefoneAlternativo;
     
