@@ -39,6 +39,8 @@ import org.hibernate.validator.constraints.NotBlank;
 //definir uma Namequery para fazer a autenticacao do Usuario na aplicacao web
 @NamedQuery(name="autenticacaoUsuario", query = "from Usuario where nomeUsuario = :paramNome and senha = :paramSenha")
 
+@NamedQuery(name="getUsuario", query = "from Usuario where nomeUsuario = :paramNome")
+
 public class Usuario implements Serializable {
     
     @Id
