@@ -42,12 +42,7 @@ public class ContaReceber implements Serializable{
     @Column(name = "data_pagamento")
     private Calendar dataPagamento;
     
-    @NotNull(message = "A ordem de servico deve ser informada")
-    @ManyToOne
-    @JoinColumn(name = "ordem_servico", referencedColumnName = "id", nullable = false, 
-            foreignKey = @ForeignKey(name = "fk_contareceber_ordemservico"))
-    private OrdemServico ordemServico; //bidirecional
-    
+
     public ContaReceber(){
         
     }
@@ -90,14 +85,6 @@ public class ContaReceber implements Serializable{
 
     public void setDataPagamento(Calendar dataPagamento) {
         this.dataPagamento = dataPagamento;
-    }
-
-    public OrdemServico getOrdemServico() {
-        return ordemServico;
-    }
-
-    public void setOrdemServico(OrdemServico ordemServico) {
-        this.ordemServico = ordemServico;
     }
 
     @Override

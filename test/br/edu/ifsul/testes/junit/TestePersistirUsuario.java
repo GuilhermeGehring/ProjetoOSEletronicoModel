@@ -41,7 +41,7 @@ public class TestePersistirUsuario {
         obj.setNomeUsuario("decesarojunior");
         obj.setSenha("123");
         obj.setTelefonePrincipal("54984045575");
-        obj.setDataCadastro(Calendar.getInstance());
+        obj.setDataCadastro(Calendar.getInstance());        
         em.getTransaction().begin();
         em.persist(obj);
         em.getTransaction().commit();        

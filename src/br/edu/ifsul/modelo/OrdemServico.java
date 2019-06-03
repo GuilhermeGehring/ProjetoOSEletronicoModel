@@ -1,3 +1,4 @@
+
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
@@ -28,136 +29,136 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Telmo Junior
  */
+
 @Entity
 @Table(name = "ordem_servico")
 public class OrdemServico implements Serializable {
-
+    
     @Id
     @SequenceGenerator(name = "seq_ordem_servico", sequenceName = "seq_ordem_servico_id", allocationSize = 1)
     @GeneratedValue(generator = "seq_ordem_servico", strategy = GenerationType.SEQUENCE)
     private Integer id;
-
+    
     @NotNull(message = "A data de abertura não pode ser nula")
     @Temporal(TemporalType.DATE)
     @Column(name = "data_abertura", nullable = false)
     private Calendar dataAbertura;
-
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "data_fechamento", nullable = true)
     private Calendar dataFechamento;
-
+    
     @NotNull(message = "A descrição do problema não pode ser nula")
     @NotBlank(message = "A descrição do problema não pode ser em branco")
     @Column(name = "descricao_problema", columnDefinition = "text", nullable = false)
     private String descricaoProblema;
-
+    
     @Column(name = "resolucao_problema", columnDefinition = "text")
     private String resolucaoProblema;
-
+    
     @Min(message = "O valor dos produtos não pode ser negativo", value = 0)
     @NotNull(message = "O valor dos produtos deve ser informado")
     @Column(name = "valor_produtos", nullable = false, columnDefinition = "numeric(12,2)")
     private Double valorProdutos;
-
+    
     @Min(message = "O valor dos serviços não pode ser negativo", value = 0)
     @NotNull(message = "O valor dos serviços deve ser informado")
     @Column(name = "valor_servicos", nullable = false, columnDefinition = "numeric(12,2)")
     private Double valorServicos;
-
+    
     @Min(message = "O valor total não pode ser negativo", value = 0)
     @NotNull(message = "O valor total deve ser informado")
     @Column(name = "valor_total", nullable = false, columnDefinition = "numeric(12,2)")
     private Double valorTotal;
-
+    
     @NotNull(message = "O status deve ser informado")
     @Column(name = "status", nullable = false, length = 15)
     @Enumerated(EnumType.STRING)
     private Status Status;
-
+    
     @NotNull(message = "A forma de pagamento deve ser informada")
     @Column(name = "forma_pagamento", nullable = false, length = 6)
     @Enumerated(EnumType.STRING)
-    private FormaPagamento formaPagamento;
-
+    private FormaPagamento formaPagamento; 
+    
     @NotNull(message = "A quantidade de parcelas deve ser informada")
     @Min(message = "O valor dos produtos não pode ser negativo", value = 0)
     @Column(name = "quantidade_parcelas", nullable = false)
     private Integer quantidadeParcelas;
-
+    
     @NotNull(message = "A pessoa física deve ser informada")
     @ManyToOne
     @JoinColumn(name = "pessoa_fisica", referencedColumnName = "nome_usuario", nullable = false,
             foreignKey = @ForeignKey(name = "fk_ordem_servico_pf"))
     private PessoaFisica pessoaFisica;
-
+    
     @NotNull(message = "O usuário deve ser informado")
     @ManyToOne
     @JoinColumn(name = "usuario", referencedColumnName = "nome_usuario", nullable = false,
             foreignKey = @ForeignKey(name = "fk_ordem_servico_usuario"))
     private Usuario usuario;
-
+    
     @NotNull(message = "O equipamento deve ser informado")
     @ManyToOne
     @JoinColumn(name = "equipamento", referencedColumnName = "id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_ordem_servico_equipamento"))
     private Equipamento equipamento;
-
+    
     @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
+        orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Foto> fotos; //agregação por composição (como é dependente, orphanRemoval = true)
-
+    
     @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
+        orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemProduto> itemProdutos; //agregação por composição  bidirecional
-
+    
     @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL,//persistencia implicita
             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemServico> itemServicos; //agregação por composição
-
+    
     @OneToMany(mappedBy = "id.ordemServico", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
+        orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ContaReceber> contasReceber; //agregação por composição
-
-    public OrdemServico() {
-
+    
+    public OrdemServico(){
+        
         valorProdutos = 0.0;
         valorServicos = 0.0;
         valorTotal = 0.0;
         quantidadeParcelas = 0;
     }
-
     //quem sabe esses metodos podem ser apresentados a medida que forem necessários
     public void gerarContasReceber() {
         if (this.getFormaPagamento() == FormaPagamento.AVISTA) {
-            ContaReceber conta = new ContaReceber();
-            conta.setValor(this.valorTotal);
-            conta.setValorPago(this.valorTotal);
-            conta.setVencimento(this.dataFechamento);
-            conta.setDataPagamento(this.dataFechamento);
-            ContaReceberID id = new ContaReceberID();
-            id.setNumeroParcela(1);
-            id.setOrdemServico(this);
-            conta.setId(id);
-            conta.setOrdemServico(this);
-            this.getContasReceber().add(conta);
+                ContaReceber conta = new ContaReceber();
+                conta.setValor(this.valorTotal);  
+                conta.setValorPago(this.valorTotal);
+                conta.setVencimento(this.dataFechamento);
+                conta.setDataPagamento(this.dataFechamento);
+                ContaReceberID idCR = new ContaReceberID();
+                idCR.setNumeroParcela(1);
+                idCR.setOrdemServico(this);
+                conta.setId(idCR);
+                //conta.setOrdemServico(this);
+                this.getContasReceber().add(conta); 
         } else if (this.getFormaPagamento() == FormaPagamento.APRAZO) {
             Double valorParcela = this.valorTotal / this.quantidadeParcelas;
             for (int i = 1; i <= this.quantidadeParcelas; i++) {
                 ContaReceber conta = new ContaReceber();
                 conta.setValor(valorParcela);
-                Calendar vencimento = (Calendar) this.dataFechamento.clone();
+                Calendar vencimento = (Calendar) this.dataFechamento.clone();//pode chegar java.lang.NullPointerException
                 vencimento.add(Calendar.MONTH, i);
                 conta.setVencimento(vencimento);
-                ContaReceberID id = new ContaReceberID();
-                id.setNumeroParcela(i);
-                id.setOrdemServico(this);
-                conta.setId(id);
-                conta.setOrdemServico(this);
-                this.getContasReceber().add(conta);
+                ContaReceberID idCR = new ContaReceberID();
+                idCR.setNumeroParcela(i);
+                idCR.setOrdemServico(this);
+                conta.setId(idCR);
+                //conta.setOrdemServico(this);
+                this.getContasReceber().add(conta);               
             }
         }
     }
-
+        
     public void atualizaValorTotal() {
         this.valorTotal = this.valorProdutos + this.valorServicos;
     }
@@ -175,7 +176,7 @@ public class OrdemServico implements Serializable {
         atualizaValorTotal();
         this.getItemServicos().remove(index);
     }
-
+    
     public void adicionarProduto(ItemProduto obj) {
         valorProdutos += obj.getValorTotal();
         obj.setOrdemServico(this);
@@ -188,7 +189,7 @@ public class OrdemServico implements Serializable {
         valorProdutos -= obj.getValorTotal();
         atualizaValorTotal();
         this.getItemProdutos().remove(index);
-    }
+    }    
 
     public void adicionarFoto(Foto obj) {
         obj.setOrdemServico(this);
@@ -197,7 +198,7 @@ public class OrdemServico implements Serializable {
 
     public void removerFoto(int index) {
         this.getFotos().remove(index);
-    }
+    }    
 
     public Integer getId() {
         return id;
@@ -263,6 +264,7 @@ public class OrdemServico implements Serializable {
         this.valorTotal = valorTotal;
     }
 
+   
     public Integer getQuantidadeParcelas() {
         return quantidadeParcelas;
     }
@@ -342,5 +344,5 @@ public class OrdemServico implements Serializable {
     public void setFormaPagamento(FormaPagamento formaPagamento) {
         this.formaPagamento = formaPagamento;
     }
-
+ 
 }

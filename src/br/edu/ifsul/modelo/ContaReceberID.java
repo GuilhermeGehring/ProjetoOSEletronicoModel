@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,8 +23,8 @@ public class ContaReceberID implements Serializable{
     @Column(name = "numero_parcela", nullable = false)
     private Integer numeroParcela;
     
-    @NotNull(message = "A Ordem de serviço deve ser informada")
-    @ManyToOne
+    @NotNull(message = "A Ordem de serviço deve ser informada")    
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ordem_servico", referencedColumnName = "id", nullable = false,
         foreignKey = @ForeignKey(name = "fk_contareceberid_os"))
     private OrdemServico ordemServico;

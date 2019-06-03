@@ -39,9 +39,16 @@ public class TestePersistirEstado {
         Estado e = new Estado();//nesse momento o e está no estado: New
         e.setNome("Santa Catarina");
         e.setUf("SC");
-        em.getTransaction().begin();
-        em.persist(e);//o status do objeto e passa para: Managed
-        em.getTransaction().commit();
+        try{
+        
+            em.getTransaction().begin();
+            em.persist(e);//o status do objeto e passa para: Managed
+            em.getTransaction().commit();
+        }catch(Exception ex){
+            
+            ex.printStackTrace();
+        }
+        
         
     }
     

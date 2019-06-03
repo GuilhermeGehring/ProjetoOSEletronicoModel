@@ -37,8 +37,8 @@ public class TestePersistirProduto {
     public void test(){
         
         Produto obj = new Produto();
-        obj.setNome("Mouse Laser Dell");
-        obj.setDescricao("Mouse Laser com alta precisão");
+        obj.setNome("Mouse Laser HP");
+        obj.setDescricao("Mouse HP com alta precisão");
         obj.setPreco(120.00);
         obj.setMarca(em.find(Marca.class, 1));
         em.getTransaction().begin();

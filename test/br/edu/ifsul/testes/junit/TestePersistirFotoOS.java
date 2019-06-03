@@ -39,12 +39,12 @@ public class TestePersistirFotoOS {
 
     @Test
     public void teste() throws IOException {
-        OrdemServico os = em.find(OrdemServico.class, 1);
+        OrdemServico os = em.find(OrdemServico.class, 3);
         Foto foto = new Foto();
         foto.setNomeFoto("mouse_quebrado.jpg");
         foto.setDescricao("Foto do mouse quebrado");
         foto.setOrdemServico(os);
-        Path path = Paths.get("C:\\Users\\deces\\Downloads\\mouse_quebrado.jpg");
+        Path path = Paths.get("C:\\Users\\deces\\Pictures\\prestes.JPG");
         foto.setArquivo(Files.readAllBytes(path));             
         em.getTransaction().begin();
         em.persist(foto);
